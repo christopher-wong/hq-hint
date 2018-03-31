@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	
+	<!-- Code based on Jake Mor, Toby Mellor, and Mike Almond -->
+
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-49814413-4"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'UA-49814413-4');
+	</script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<meta content="utf-8" http-equiv="encoding">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta property="og:title" content="HQ Hint - Real time HQ Trivia Answers" />
+	<meta name="description" content="Predicts answers to live HQ questions using automated Google seraches." />
+	<link rel="shortcut icon" href="http://hq-hint.surge.sh/favicon.ico" type="image/x-icon" />
+
+	<link rel="stylesheet" href="index.css">
+	<title>HQ Hint - Real time HQ Trivia Answers</title>
+</head>
+<body>
+	<div id="particles-js"></div>
+
+	<div id="container" class="container">
+		<div class="title">
+			<p class="title-text">HQ Hint</p>
+		</div>
+		<div id="live-bubble" class="live-indicator">
+			<p id="live-indicator"></p>
+		</div>
+		<div class="iphone">
+			<div class="iphone-bg">
+				<div class="notch-container">
+					<div class="notch"></div>
+				</div>
+
+				<div class="content">
+					<br>
+					<div class="score"><p id="status-text">Loading...</p></div>
+					<h2 class="question" id="question"></h2>
+					<br>
+					<div class="answer" id="ans_1_button"><span id="ans_1"></span><span class="answer_count" id="ans_1_count"></span></div>
+					<div class="answer" id="ans_2_button"><span id="ans_2"></span><span class="answer_count" id="ans_2_count"></span></div>
+					<div class="answer" id="ans_3_button"><span id="ans_3"></span><span class="answer_count" id="ans_3_count"></span></div>
+					<br>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://www.gstatic.com/firebasejs/4.7.0/firebase.js"></script>
+	<script>
+	    // Initialize Firebase
+	    var config = {
+	        apiKey: "AIzaSyCputrvjhCQxsP-V9jiKuKWR-HlNfucSd0",
+	        authDomain: "hqhint-hosted.firebaseapp.com",
+	        databaseURL: "https://hqhint-hosted.firebaseio.com",
+	        projectId: "hqhint-hosted",
+	        storageBucket: "hqhint-hosted.appspot.com",
+	        messagingSenderId: "223147621324"
+	    };
+	    firebase.initializeApp(config);
+	</script>
+
+	<script type="text/javascript">
+
+		window.onload = function() {
+
+			var questionRef = firebase.database().ref('q1/');
+
+			questionRef.on('value', function(snapshot) {
+				newData = snapshot.val()
+				var question = document.getElementById('question');
+				var ans1 = document.getElementById('ans_1');
+				var ans2 = document.getElementById('ans_2');
+				var ans3 = document.getElementById('ans_3');
+
+				var ans1Count = document.getElementById('ans_1_count');
+				var ans2Count = document.getElementById('ans_2_count');
+				var ans3Count = document.getElementById('ans_3_count');
+
+				var liveStatus = document.getElementById('live-indicator');
+				var liveBubble = document.getElementById("live-bubble")
+
+				if (newData.live) {
+					liveStatus.innerHTML = "Live!"
+					liveBubble.classList.remove("standby-background")
+					liveBubble.classList.add("live-background")
+				} else {
+					liveStatus.innerHTML = "Standby..."
+					liveBubble.classList.remove("live-background")
+					liveBubble.classList.add("standby-background")
+				}
+
+				question.innerHTML = newData.question
+				ans1.innerHTML = newData.ans_1
+				ans2.innerHTML = newData.ans_2
+				ans3.innerHTML = newData.ans_3
+				ans1Count.innerHTML = newData.ans_1_count
+				ans2Count.innerHTML = newData.ans_2_count
+				ans3Count.innerHTML = newData.ans_3_count
+
+				var score1 = parseInt(newData.ans_1_count)
+				var score2 = parseInt(newData.ans_2_count)
+				var score3 = parseInt(newData.ans_3_count)
+
+				// var max = Math.max(score1, score2, score3)
+				// var sum = Math.max(score1 + score2 + score3)
+				// var mean = sum / 3
+
+				// var maxOverSum = max / sum
+
+				// var sd = Math.sqrt(0.333 * (Math.pow(score1 - mean, 2) + Math.pow(score2 - mean, 2) + Math.pow(score3 - mean, 2)))
+
+				// console.log("max", max)
+				// console.log("mean", mean)
+				// console.log("sum", sum)
+
+				// var score = Math.floor(maxOverSum * 90)// + Math.floor((100 - Math.floor(maxOverSum * 100)) * 0.33)
+
+				// if (!score) {
+				// 	score = 0
+				// }
+
+				var statusText = document.getElementById("status-text")
+
+				if (newData.correct_ans == "") {
+					statusText.innerHTML = "Thinking..."
+				} else {
+					statusText.innerHTML = ""
+				}
+
+				ans1Button = document.getElementById("ans_1_button")
+				ans2Button = document.getElementById("ans_2_button")
+				ans3Button = document.getElementById("ans_3_button")
+
+				ans1Button.classList.remove("correct_answer")
+				ans2Button.classList.remove("correct_answer")
+				ans3Button.classList.remove("correct_answer")
+
+				var correctId = newData.correct_ans
+				var correctAnswer = document.getElementById(correctId + "_button")
+				correctAnswer.classList.add("correct_answer")
+			});
+		}
+	</script>
+	<script src="js/particles.js"></script>
+	<script src="js/app.js"></script>
+</body>
+</html>
+
