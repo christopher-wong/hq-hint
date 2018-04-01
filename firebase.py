@@ -58,7 +58,7 @@ def sync_questions(question_block):
     r = requests.put(url, data=json.dumps(data))
     # print(r.text)
 
-def sync_results(question_block, results, best_answer_idx):
+def sync_results(question_block, results):
     """
         uploads results data to firebase (after googling)
 
@@ -66,16 +66,16 @@ def sync_results(question_block, results, best_answer_idx):
 
     print(results)
 
-    # to_check = max(results, key=lambda x: x["count"])
-    #
-    # if " not " in question_block["question"].lower():
-    #     to_check = min(results, key=lambda x: x["count"])
-    #
-    # correct_ans = ""
+    to_check = max(results, key=lambda x: x["count"])
 
-    # for (i, r) in enumerate(results):
-    #     if r["ans"] == to_check["ans"]:
-    #         correct_ans = "ans_%s" % (i + 1)
+    if " not " in question_block["question"].lower():
+        to_check = min(results, key=lambda x: x["count"])
+
+    correct_ans = ""
+
+    for (i, r) in enumerate(results):
+        if r["ans"] == to_check["ans"]:
+            correct_ans = "ans_%s" % (i + 1)
 
     data = {
         "question": question_block["question"],
@@ -85,7 +85,7 @@ def sync_results(question_block, results, best_answer_idx):
         "ans_1_count": results[0]["count"],
         "ans_2_count": results[1]["count"],
         "ans_3_count": results[2]["count"],
-        "correct_ans": f"{best_answer_idx + 1}",
+        "correct_ans": correct_ans,
         "thinking": False,
         "live": True,
     }
@@ -95,4 +95,4 @@ def sync_results(question_block, results, best_answer_idx):
     # print(r.text)
 
 # new_game()
-standby()
+# standby()

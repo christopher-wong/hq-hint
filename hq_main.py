@@ -22,6 +22,7 @@ while True:
     try:
         response_data = asyncio.get_event_loop().run_until_complete(
             networking.get_json_response(main_url, timeout=1.5, headers=headers))
+        firebase.new_game()
     except:
         print("Server response not JSON, retrying...")
         time.sleep(1)
@@ -42,6 +43,5 @@ while True:
             exit()
     else:
         socket = response_data["broadcast"]["socketUrl"]
-        firebase.new_game()
         print(f"Show active, connecting to socket at {socket}")
         asyncio.get_event_loop().run_until_complete(networking.websocket_handler(socket, headers))

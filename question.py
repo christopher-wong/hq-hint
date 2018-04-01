@@ -76,10 +76,10 @@ async def answer_question(question, original_answers):
     for i, ans_count in enumerate(counts.values()):
         results.append({
             "count": ans_count,
-            "question": f"ans_{i + 1}",
+            "ans": f"ans_{i + 1}",
         })
 
-    firebase.sync_results(question_block, results, answers.index(best_answer))
+    firebase.sync_results(question_block, results)
 
     # print(f"Search took {time.time() - start} seconds")
     return ""
@@ -129,5 +129,5 @@ async def __search_method2(texts, answers, reverse):
     counts_sum = {answer: sum(keyword_counts.values()) for answer, keyword_counts in counts.items()}
 
     if not all(c == 0 for c in counts_sum.values()):
-        return (min(counts_sum, key=counts_sum.get) if reverse else max(counts_sum, key=counts_sum.get)), counts
-    return "", counts
+        return (min(counts_sum, key=counts_sum.get) if reverse else max(counts_sum, key=counts_sum.get)), counts_sum
+    return "", counts_sum

@@ -1,10 +1,3 @@
-/*@font-face {
-  font-family: system;
-  font-style: normal;
-  font-weight: 300;
-  src: local(".SFNSText-Light"), local(".HelveticaNeueDeskInterface-Light"), local(".LucidaGrandeUI"), local("Ubuntu Light"), local("Segoe UI Light"), local("Roboto-Light"), local("DroidSans"), local("Tahoma");
-}*/
-
 @font-face {
     font-family: Proxima-Nova;
     font-weight: bold;
@@ -14,13 +7,13 @@
 @font-face {
     font-family: Proxima-Nova;
     font-weight: lighter;
-    src: url(Proxima-Nova-thin-webfont.ttf);
+    src: url(Proxima-Nova-Thin-webfont.ttf);
 }
 
 @font-face {
     font-family: Proxima-Nova;
     font-weight: normal;
-    src: url(Proxima-Nov-Alt-Regular-webfont.ttf);
+    src: url(Proxima-Nova-Alt-Regular-webfont.ttf);
 }
 
 canvas {
