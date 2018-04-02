@@ -1,10 +1,12 @@
 import asyncio
 import json
+
 import re
 
 import aiohttp
 
 import question
+
 
 async def fetch(url, session, timeout):
     try:
@@ -12,6 +14,7 @@ async def fetch(url, session, timeout):
             return await response.text()
     except Exception:
         print(f"Server timeout/error to {url}")
+
         return ""
 
 

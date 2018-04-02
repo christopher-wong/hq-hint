@@ -84,7 +84,7 @@ async def answer_question(question, original_answers):
     with open('questions.csv', 'a') as file:
         # writes a CSV with these values to disk
         # question, answer1, answer2, answer3, predicted_answer
-        file.write("\t".join([question, results[0], results[1], results[2], (best_answer if best_answer is not None else " "), "\n"]))
+        file.write("\t".join([question, question_block["ans_1"], question_block["ans_2"], question_block["ans_3"], best_answer, "\n"]))
         file.close()
 
     # print(f"Search took {time.time() - start} seconds")
