@@ -11,11 +11,11 @@ with open("conn_settings.txt", "r") as conn_settings:
 
 print("Authenticating to server...")
 main_url = f"https://api-quiz.hype.space/shows/now?type=hq&userId={USER_ID}"
-headers = {"x-hq-client": "Android/1.3.0",
-           "Authorization": f"Bearer {BEARER_TOKEN}",
-           "x-hq-stk": "MQ==",
-           "Connection": "Keep-Alive",
-           "User-Agent": "okhttp/3.8.0"}
+headers = {"Authorization": f"Bearer {BEARER_TOKEN}",
+           "x-hq-client": "Android/1.3.0"}
+# "x-hq-stk": "MQ==",
+# "Connection": "Keep-Alive",
+# "User-Agent": "okhttp/3.8.0"}
 
 while True:
     print()

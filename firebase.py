@@ -64,7 +64,7 @@ def sync_results(question_block, results):
 
     """
 
-    print(results)
+    # print(results)
 
     to_check = max(results, key=lambda x: x["count"])
 
@@ -94,5 +94,5 @@ def sync_results(question_block, results):
     r = requests.put(url, data=json.dumps(data))
     # print(r.text)
 
-# new_game()
+new_game()
 # standby()
