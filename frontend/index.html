@@ -123,7 +123,10 @@
 				var score1 = parseInt(newData.ans_1_count)
 				var score2 = parseInt(newData.ans_2_count)
 				var score3 = parseInt(newData.ans_3_count)
-				console.log(newData.backup ? "Backup answer: " + newData.backup : "Backup answer: NONE")
+
+				if (newData.backup) {
+					console.log("%c Backup: " + newData.backup, "color: #27ae60");
+				}
 
 				// var max = Math.max(score1, score2, score3)
 				// var sum = Math.max(score1 + score2 + score3)
@@ -161,7 +164,10 @@
 
 				var correctId = newData.correct_ans
 				var correctAnswer = document.getElementById(correctId + "_button")
-				correctAnswer.classList.add("correct_answer")
+				
+				if (correctAnswer) {
+					correctAnswer.classList.add("correct_answer")
+				}
 			});
 		}
 	</script>

@@ -5,7 +5,7 @@ from collections import defaultdict
 
 from unidecode import unidecode
 
-import search, firebase
+import search, firebase, jakes
 
 punctuation_to_none = str.maketrans({key: None for key in "!\"#$%&\'()*+,-.:;<=>?@[\\]^_`{|}~�"})
 punctuation_to_space = str.maketrans({key: " " for key in "!\"#$%&\'()*+,-.:;<=>?@[\\]^_`{|}~�"})
@@ -82,7 +82,11 @@ async def answer_question(question, original_answers):
 
     firebase.sync_results(question_block, results)
 
-    # BACKUP METHOD #
+    with open('questions.csv', 'a') as file:
+        # writes a CSV with these values to disk
+        # question, answer1, answer2, answer3, predicted_answer
+        file.write("\t".join([question, question_block["ans_1"], question_block["ans_2"], question_block["ans_3"], best_answer + "\n"]))
+        file.close()
 
     # Get key nouns for Method 3
     key_nouns = set(quoted)
@@ -104,21 +108,24 @@ async def answer_question(question, original_answers):
     key_nouns = [noun.lower() for noun in key_nouns]
 
     answer3 = await __search_method3(list(set(question_keywords)), key_nouns, original_answers, reverse)
-    print(colors.blue + "\n" + "Backup answer: " + str(answer3) + colors.end)
+    print(colors.blue + "\n" + "Method 3: " + str(answer3) + colors.end)
 
-    # let's just sync the backup answer too...
-    question_block['backup'] = answer3
-    firebase.sync_results(question_block, results)
-    # BACKUP OVER #
+    # let's just sync the backup answer too..
+    # create a copy of the question block, modify and send to server
+    method_3_question_block = question_block.copy()
+    method_3_question_block['backup'] = answer3
+    firebase.sync_results(method_3_question_block, results)
 
-    with open('questions.csv', 'a') as file:
-        # writes a CSV with these values to disk
-        # question, answer1, answer2, answer3, predicted_answer
-        file.write("\t".join([question, question_block["ans_1"], question_block["ans_2"],
-                              question_block["ans_3"], best_answer, "\n"]))
-        file.close()
-
+    # END METHOD 3#
     # print(f"Search took {time.time() - start} seconds")
+
+    # JAKE MORE METHOD #
+    # keep this local for now
+    method_4 = jakes.rank_answers(question_block)
+    jakes.print_results(method_4)
+
+    # END JAKE'S METHOD
+
     return ""
 
 
