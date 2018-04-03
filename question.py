@@ -1,7 +1,7 @@
-# import itertools
+import itertools
 import re
 # import time
-# from collections import defaultdict
+from collections import defaultdict
 
 from unidecode import unidecode
 
@@ -68,7 +68,7 @@ async def answer_question(question, original_answers):
     if best_answer == "":
         best_answer, counts = await __search_method2(search_text, answers, reverse)
 
-    print(colors.green + best_answer + "\n" + colors.end)
+    print(colors.green + "Primary answer: " + best_answer + "\n" + colors.end)
 
     # add the best answer to the question_block and push to the server
     results = []
@@ -81,10 +81,40 @@ async def answer_question(question, original_answers):
 
     firebase.sync_results(question_block, results)
 
+    # BACKUP METHOD #
+
+    # Get key nouns for Method 3
+    key_nouns = set(quoted)
+
+    if len(key_nouns) == 0:
+        q_word_location = -1
+        for q_word in ["what", "when", "who", "which", "whom", "where", "why", "how"]:
+            q_word_location = question_lower.find(q_word)
+            if q_word_location != -1:
+                break
+
+        if q_word_location > len(question) // 2 or q_word_location == -1:
+            key_nouns.update(search.find_nouns(question, num_words=5))
+        else:
+            key_nouns.update(search.find_nouns(question, num_words=5, reverse=True))
+
+        key_nouns -= {"type"}
+
+    key_nouns = [noun.lower() for noun in key_nouns]
+
+    answer3 = await __search_method3(list(set(question_keywords)), key_nouns, original_answers, reverse)
+    print(colors.blue + "\n" + "Backup answer: " + str(answer3) + colors.end)
+
+    # let's just sync the backup answer too...
+    question_block['backup'] = answer3
+    firebase.sync_results(question_block, results)
+    # BACKUP OVER #
+
     with open('questions.csv', 'a') as file:
         # writes a CSV with these values to disk
         # question, answer1, answer2, answer3, predicted_answer
-        file.write("\t".join([question, question_block["ans_1"], question_block["ans_2"], question_block["ans_3"], best_answer, "\n"]))
+        file.write("\t".join([question, question_block["ans_1"], question_block["ans_2"],
+                              question_block["ans_3"], best_answer, "\n"]))
         file.close()
 
     # print(f"Search took {time.time() - start} seconds")
@@ -137,3 +167,63 @@ async def __search_method2(texts, answers, reverse):
     if not all(c == 0 for c in counts_sum.values()):
         return (min(counts_sum, key=counts_sum.get) if reverse else max(counts_sum, key=counts_sum.get)), counts_sum
     return "", counts_sum
+
+
+async def __search_method3(question_keywords, question_key_nouns, answers, reverse):
+    """
+    Returns the answer with the maximum number of occurrences of the question keywords in its searches.
+    :param question_keywords: Keywords of the question
+    :param question_key_nouns: Key nouns of the question
+    :param answers: List of answers
+    :param reverse: True if the best answer occurs the least, False otherwise
+    :return: Answer whose search results contain the most keywords of the question
+    """
+    print("Running method 3")
+    search_results = await search.multiple_search(answers, 5)
+    print("Search processed")
+    answer_lengths = list(map(len, search_results))
+    search_results = itertools.chain.from_iterable(search_results)
+
+    texts = [x.translate(punctuation_to_none) for x in await search.get_clean_texts(search_results)]
+    print("URLs fetched")
+    answer_text_map = {}
+    for idx, length in enumerate(answer_lengths):
+        answer_text_map[answers[idx]] = texts[0:length]
+        del texts[0:length]
+
+    keyword_scores = {answer: 0 for answer in answers}
+    noun_scores = {answer: 0 for answer in answers}
+
+    # Create a dictionary of word to type of score so we avoid searching for the same thing twice in the same page
+    word_score_map = defaultdict(list)
+    for word in question_keywords:
+        word_score_map[word].append("KW")
+    for word in question_key_nouns:
+        word_score_map[word].append("KN")
+
+    answer_noun_scores_map = {}
+    for answer, texts in answer_text_map.items():
+        keyword_score = 0
+        noun_score = 0
+        noun_score_map = defaultdict(int)
+
+        for text in texts:
+            for keyword, score_types in word_score_map.items():
+                score = len(re.findall(f" {keyword} ", text))
+                if "KW" in score_types:
+                    keyword_score += score
+                if "KN" in score_types:
+                    noun_score += score
+                    noun_score_map[keyword] += score
+
+        keyword_scores[answer] = keyword_score
+        noun_scores[answer] = noun_score
+        answer_noun_scores_map[answer] = noun_score_map
+
+    # print()
+    # print("\n".join([f"{answer}: {dict(scores)}" for answer, scores in answer_noun_scores_map.items()]))
+    # print()
+    #
+    # print(f"Keyword scores: {keyword_scores}")
+    # print(f"Noun scores: {noun_scores}")
+    return min(noun_scores, key=noun_scores.get) if reverse else max(noun_scores, key=noun_scores.get)
