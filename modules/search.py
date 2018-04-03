@@ -8,7 +8,7 @@ from nltk.tag.perceptron import PerceptronTagger
 from nltk.tokenize import RegexpTokenizer
 from unidecode import unidecode
 
-import networking
+from modules import networking
 
 STOP = set(stopwords.words("english")) - {"most", "least"}
 tokenizer = RegexpTokenizer(r"\w+")

@@ -1,11 +1,10 @@
 import itertools
 import re
-import time
 from collections import defaultdict
 
 from unidecode import unidecode
 
-import search, firebase, jakes
+from modules import firebase, search, jakes
 
 punctuation_to_none = str.maketrans({key: None for key in "!\"#$%&\'()*+,-.:;<=>?@[\\]^_`{|}~�"})
 punctuation_to_space = str.maketrans({key: " " for key in "!\"#$%&\'()*+,-.:;<=>?@[\\]^_`{|}~�"})

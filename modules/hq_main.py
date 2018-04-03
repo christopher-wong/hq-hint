@@ -2,7 +2,7 @@ import asyncio
 import time
 from datetime import datetime
 
-import networking, firebase
+from modules import firebase, networking
 
 # Read in bearer token and user ID
 with open("conn_settings.txt", "r") as conn_settings:

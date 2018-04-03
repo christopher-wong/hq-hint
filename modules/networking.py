@@ -5,7 +5,7 @@ import re
 
 import aiohttp
 
-import question
+from modules import question
 
 
 async def fetch(url, session, timeout):
