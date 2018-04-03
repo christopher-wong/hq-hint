@@ -1,6 +1,6 @@
 import itertools
 import re
-# import time
+import time
 from collections import defaultdict
 
 from unidecode import unidecode
@@ -9,6 +9,7 @@ import search, firebase
 
 punctuation_to_none = str.maketrans({key: None for key in "!\"#$%&\'()*+,-.:;<=>?@[\\]^_`{|}~�"})
 punctuation_to_space = str.maketrans({key: " " for key in "!\"#$%&\'()*+,-.:;<=>?@[\\]^_`{|}~�"})
+
 
 class colors:
     blue = '\033[94m'
