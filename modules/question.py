@@ -88,40 +88,47 @@ async def answer_question(question, original_answers):
         file.close()
 
     # Get key nouns for Method 3
-    key_nouns = set(quoted)
-
-    if len(key_nouns) == 0:
-        q_word_location = -1
-        for q_word in ["what", "when", "who", "which", "whom", "where", "why", "how"]:
-            q_word_location = question_lower.find(q_word)
-            if q_word_location != -1:
-                break
-
-        if q_word_location > len(question) // 2 or q_word_location == -1:
-            key_nouns.update(search.find_nouns(question, num_words=5))
-        else:
-            key_nouns.update(search.find_nouns(question, num_words=5, reverse=True))
-
-        key_nouns -= {"type"}
-
-    key_nouns = [noun.lower() for noun in key_nouns]
-
-    answer3 = await __search_method3(list(set(question_keywords)), key_nouns, original_answers, reverse)
-    print(colors.blue + "\n" + "Method 3: " + "".join(answer3) + colors.end)
-
-    # let's just sync the backup answer too..
-    # create a copy of the question block, modify and send to server
-    method_3_question_block = question_block.copy()
-    method_3_question_block['backup'] = answer3
-    firebase.sync_results(method_3_question_block, results)
+    # key_nouns = set(quoted)
+    #
+    # if len(key_nouns) == 0:
+    #     q_word_location = -1
+    #     for q_word in ["what", "when", "who", "which", "whom", "where", "why", "how"]:
+    #         q_word_location = question_lower.find(q_word)
+    #         if q_word_location != -1:
+    #             break
+    #
+    #     if q_word_location > len(question) // 2 or q_word_location == -1:
+    #         key_nouns.update(search.find_nouns(question, num_words=5))
+    #     else:
+    #         key_nouns.update(search.find_nouns(question, num_words=5, reverse=True))
+    #
+    #     key_nouns -= {"type"}
+    #
+    # key_nouns = [noun.lower() for noun in key_nouns]
+    #
+    # answer3 = await __search_method3(list(set(question_keywords)), key_nouns, original_answers, reverse)
+    # print(colors.blue + "\n" + "Method 3: " + "".join(answer3) + colors.end)
+    #
+    # # let's just sync the backup answer too..
+    # # create a copy of the question block, modify and send to server
+    # method_3_question_block = question_block.copy()
+    # method_3_question_block['backup'] = answer3
+    # firebase.sync_results(method_3_question_block, results)
 
     # END METHOD 3#
     # print(f"Search took {time.time() - start} seconds")
 
     # JAKE MORE METHOD #
-    # keep this local for now
+
+    # find answer using Jake's method
     method_4 = jakes.rank_answers(question_block)
-    jakes.print_results(method_4)
+
+    # copy question block, add backup answer to block, a d print
+    jakes_question_block = question_block.copy()
+    jakes_question_block['backup'] = jakes.print_results(method_4)
+
+    # sync to remove
+    firebase.sync_results(question_block, results)
 
     # END JAKE'S METHOD
 
@@ -136,7 +143,7 @@ async def __search_method1(texts, answers, reverse):
     :param reverse: True if the best answer occurs the least, False otherwise
     :return: Answer that occurs the most/least in the texts, empty string if there is a tie
     """
-    print("Running method 1")
+    # print("Running method 1")
     counts = {answer.lower(): 0 for answer in answers}
 
     for text in texts:

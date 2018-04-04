@@ -10,4 +10,5 @@ COPY . .
 
 # install nltk files
 RUN python -m nltk.downloader all
-CMD [ "python",  "go.py" ]
+
+#CMD [ "python",  "go.py" ]

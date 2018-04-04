@@ -12,15 +12,16 @@ class colors:
     bold = '\033[1m'
 
 
-def google(q_list, num):
+def google(question, num):
     """
         given a list of queries, this function Google's them as a concatenated string.
 
     """
 
-    params = {"q": " ".join(q_list), "num": num}
+    params = {"q": question, "num": num}
     url_params = urllib.parse.urlencode(params)
     google_url = "https://www.google.com/search?" + url_params
+
     r = requests.get(google_url)
 
     soup = BeautifulSoup(r.text, "html.parser")
@@ -40,12 +41,12 @@ def rank_answers(question_block):
 
     """
 
-    print("rankings answers...")
+    # print("rankings answers...")
 
     question = question_block["question"]
-    ans_1 = question_block["ans_1"]
-    ans_2 = question_block["ans_2"]
-    ans_3 = question_block["ans_3"]
+    ans_1 = question_block["ans_1"].lower()
+    ans_2 = question_block["ans_2"].lower()
+    ans_3 = question_block["ans_3"].lower()
 
     reverse = True
 
@@ -53,11 +54,9 @@ def rank_answers(question_block):
         print("reversing results...")
         reverse = False
 
-    text = google([question], 50)
+        text = google(question, 50)
 
     results = []
-
-    # print(text)
 
     results.append({"ans": ans_1, "count": text.count(ans_1)})
     results.append({"ans": ans_2, "count": text.count(ans_2)})
@@ -75,7 +74,7 @@ def rank_answers(question_block):
 
     if (sorted_results[0]["count"] == sorted_results[1]["count"]):
         # build url, get html
-        print("running tiebreaker...")
+        # print("running tiebreaker...")
 
         text = google([question, ans_1, ans_2, ans_3], 50)
 
@@ -111,14 +110,22 @@ def print_results(results):
 
     print(colors.blue + "-" * 15 + colors.end)
 
+    return large['ans'] if large['ans'] else ""
+
 # def main():
-#     results = rank_answers({
-# 		"question": "what shape does Italy have on a map?",
-# 		"ans_1": "wine-glass",
-# 		"ans_2": "boot",
-# 		"ans_3": "cup",
-# 	})
 #
-#     print_results(results)
+#     data = {
+# 		"question": "Which astronomer did NOT discover three famous laws of motion?",
+# 		"ans_1": "Newton",
+# 		"ans_2": "Galileo",
+# 		"ans_3": "Kepler",
+#     }
+#
+#     # results = rank_answers(data)
+#     #
+#     # answer = print_results(results)
+#     # print(answer)
+#
+#     print(google(data['question'], 1))
 #
 # main()

@@ -33,7 +33,7 @@ def find_nouns(text, num_words, reverse=False):
     tokens = word_tokenize(text)
     # tags = tagger.tag(tokens)
     tags = [tag for tag in tagger.tag(tokens) if tag[1] != "POS"]
-    print(tags)
+    # print(tags)
 
     tags = tags[:num_words] if not reverse else tags[-num_words:]
 
