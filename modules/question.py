@@ -107,7 +107,7 @@ async def answer_question(question, original_answers):
     key_nouns = [noun.lower() for noun in key_nouns]
 
     answer3 = await __search_method3(list(set(question_keywords)), key_nouns, original_answers, reverse)
-    print(colors.blue + "\n" + "Method 3: " + str(answer3) + colors.end)
+    print(colors.blue + "\n" + "Method 3: " + "".join(answer3) + colors.end)
 
     # let's just sync the backup answer too..
     # create a copy of the question block, modify and send to server

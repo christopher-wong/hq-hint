@@ -56,7 +56,7 @@ async def websocket_handler(uri, headers):
                     elif message_data["type"] != "interaction":
                         if message_data["type"] == "question":
                             question_str = message_data["question"]
-                            answers = [ans["text"] for ans in message_data["answers"] if ans["text"].strip() != ""]
+                            answers = [str(ans["text"]) for ans in message_data["answers"] if ans["text"].strip() != ""]
                             # print("\n" * 5)
                             # print("Question detected.")
                             print(f"Question {message_data['questionNumber']} out of {message_data['questionCount']}")
