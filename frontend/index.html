@@ -51,6 +51,9 @@
 					<div class="answer" id="ans_3_button"><span id="ans_3"></span><span class="answer_count" id="ans_3_count"></span></div>
 					<br>
 				</div>
+				<div class="backup">
+					<p class="backup" id="backup_ans"></p>
+				</div>
 			</div>
 		</div>
 		<div class="disclaimer">
@@ -80,6 +83,9 @@
 
 			questionRef.on('value', function(snapshot) {
 				newData = snapshot.val()
+
+				var backup_ans = document.getElementById("backup_ans")
+
 				var question = document.getElementById('question');
 				var ans1 = document.getElementById('ans_1');
 				var ans2 = document.getElementById('ans_2');
@@ -115,7 +121,10 @@
 				var score3 = parseInt(newData.ans_3_count)
 
 				if (newData.backup) {
+					backup_ans.innerHTML = "Backup: " + newData.backup
 					console.log("%c Backup: " + newData.backup, "color: #27ae60");
+				} else {
+					backup_ans.innerHTML = "Backup: none." 
 				}
 
 				// var max = Math.max(score1, score2, score3)
@@ -155,7 +164,7 @@
 				var correctId = newData.correct_ans
 				var correctAnswer = document.getElementById(correctId + "_button")
 				
-				if (correctAnswer) {
+				if (correctId) { // if (correctAnswer) {
 					correctAnswer.classList.add("correct_answer")
 				}
 			});

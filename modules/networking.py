@@ -1,9 +1,9 @@
 import asyncio
 import json
-
 import re
 
 import aiohttp
+from unidecode import unidecode
 
 from modules import question
 
@@ -14,7 +14,6 @@ async def fetch(url, session, timeout):
             return await response.text()
     except Exception:
         print(f"Server timeout/error to {url}")
-
         return ""
 
 
@@ -42,7 +41,7 @@ async def get_json_response(url, timeout, headers):
 
 async def websocket_handler(uri, headers):
     async with aiohttp.ClientSession() as session:
-        async with session.ws_connect(uri, headers=headers, heartbeat=5) as ws:
+        async with session.ws_connect(uri, headers=headers, heartbeat=5, timeout=30) as ws:
             print("Connected")
             async for msg in ws:
                 if msg.type == aiohttp.WSMsgType.TEXT:
@@ -55,17 +54,14 @@ async def websocket_handler(uri, headers):
                         raise RuntimeError("Connection settings invalid")
                     elif message_data["type"] != "interaction":
                         if message_data["type"] == "question":
-                            question_str = message_data["question"]
-                            answers = [str(ans["text"]) for ans in message_data["answers"] if ans["text"].strip() != ""]
-                            # print("\n" * 5)
-                            # print("Question detected.")
+                            question_str = unidecode(message_data["question"])
+                            answers = [unidecode(ans["text"]) for ans in message_data["answers"]]
+                            print("\n" * 5)
+                            print("Question detected.")
                             print(f"Question {message_data['questionNumber']} out of {message_data['questionCount']}")
                             print(question_str)
                             print(answers)
                             print()
                             await question.answer_question(question_str, answers)
-                # elif msg.type in (aiohttp.WSMsgType.CLOSED, aiohttp.WSMsgType.ERROR):
-                #     print(f"Closed: {msg.data}")
-                #     break
 
     print("Socket closed")

@@ -86,6 +86,7 @@ def sync_results(question_block, results):
         "ans_2_count": results[1]["count"],
         "ans_3_count": results[2]["count"],
         "correct_ans": correct_ans,
+        "backup": question_block["backup"],
         "thinking": False,
         "live": True,
     }

@@ -9,6 +9,8 @@ with open("conn_settings.txt", "r") as conn_settings:
     BEARER_TOKEN = conn_settings.readline().strip().split("=")[1]
     USER_ID = conn_settings.readline().strip().split("=")[1]
 
+firebase.new_game()
+
 print("Authenticating to server...")
 main_url = f"https://api-quiz.hype.space/shows/now?type=hq&userId={USER_ID}"
 headers = {"Authorization": f"Bearer {BEARER_TOKEN}",
@@ -38,10 +40,11 @@ while True:
 
             print(f"Next show time: {(next_time + offset).strftime('%Y-%m-%d %I:%M %p')}")
             print("Prize: " + response_data["nextShowPrize"])
+
             firebase.standby()
+
             exit()
     else:
-        # firebase.new_game()
         socket = response_data["broadcast"]["socketUrl"]
         print(f"Show active, connecting to socket at {socket}")
         asyncio.get_event_loop().run_until_complete(networking.websocket_handler(socket, headers))

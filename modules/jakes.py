@@ -54,7 +54,7 @@ def rank_answers(question_block):
         print("reversing results...")
         reverse = False
 
-        text = google(question, 50)
+    text = google(question, 50)
 
     results = []
 
@@ -121,11 +121,9 @@ def print_results(results):
 # 		"ans_3": "Kepler",
 #     }
 #
-#     # results = rank_answers(data)
-#     #
-#     # answer = print_results(results)
-#     # print(answer)
+#     results = rank_answers(data)
 #
-#     print(google(data['question'], 1))
+#     answer = print_results(results)
+#     print(answer)
 #
 # main()

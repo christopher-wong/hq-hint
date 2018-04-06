@@ -2,8 +2,6 @@ import itertools
 import re
 from collections import defaultdict
 
-from unidecode import unidecode
-
 from modules import firebase, search, jakes
 
 punctuation_to_none = str.maketrans({key: None for key in "!\"#$%&\'()*+,-.:;<=>?@[\\]^_`{|}~�"})
@@ -33,11 +31,8 @@ async def answer_question(question, original_answers):
     # sync questions without answer to the server
     firebase.sync_questions(question_block)
 
-    question = unidecode(question)
-
     answers = []
     for ans in original_answers:
-        ans = unidecode(ans)
         answers.append(ans.translate(punctuation_to_none))
         answers.append(ans.translate(punctuation_to_space))
     answers = list(dict.fromkeys(answers))
@@ -127,8 +122,8 @@ async def answer_question(question, original_answers):
     jakes_question_block = question_block.copy()
     jakes_question_block['backup'] = jakes.print_results(method_4)
 
-    # sync to remove
-    firebase.sync_results(question_block, results)
+    # sync to remote, this answer gets logged to the console
+    firebase.sync_results(jakes_question_block, results)
 
     # END JAKE'S METHOD
 
