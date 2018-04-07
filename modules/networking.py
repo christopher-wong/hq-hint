@@ -56,7 +56,7 @@ async def websocket_handler(uri, headers):
                         if message_data["type"] == "question":
                             question_str = unidecode(message_data["question"])
                             answers = [unidecode(ans["text"]) for ans in message_data["answers"]]
-                            print("\n" * 5)
+                            # print("\n" * 5)
                             print("Question detected.")
                             print(f"Question {message_data['questionNumber']} out of {message_data['questionCount']}")
                             print(question_str)

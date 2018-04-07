@@ -12,6 +12,7 @@ def new_game():
         "correct_ans": "ans_2",
         "thinking": False,
         "live": True,
+        "backup": "none",
     }
 
     url = "https://hqhint-hosted.firebaseio.com/q1.json"
@@ -30,6 +31,7 @@ def standby():
         "correct_ans": "ans_3",
         "thinking": False,
         "live": False,
+        "backup": "none",
     }
 
     url = "https://hqhint-hosted.firebaseio.com/q1.json"
@@ -52,6 +54,7 @@ def sync_questions(question_block):
         "correct_ans": "",
         "thinking": True,
         "live": True,
+        "backup": "none",
     }
 
     url = "https://hqhint-hosted.firebaseio.com/q1.json"
@@ -76,6 +79,8 @@ def sync_results(question_block, results):
     for (i, r) in enumerate(results):
         if r["ans"] == to_check["ans"]:
             correct_ans = "ans_%s" % (i + 1)
+
+
 
     data = {
         "question": question_block["question"],

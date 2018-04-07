@@ -120,12 +120,13 @@
 				var score2 = parseInt(newData.ans_2_count)
 				var score3 = parseInt(newData.ans_3_count)
 
-				if (newData.backup) {
-					backup_ans.innerHTML = "Backup: " + newData.backup
-					console.log("%c Backup: " + newData.backup, "color: #27ae60");
-				} else {
-					backup_ans.innerHTML = "Backup: none." 
-				}
+				backup_ans.innerHTML = "Backup: " + newData.backup
+				// if (newData.backup) {
+				// 	backup_ans.innerHTML = "Backup: " + newData.backup
+				// 	console.log("%c Backup: " + newData.backup, "color: #27ae60");
+				// } else {
+				// 	backup_ans.innerHTML = "Backup:"
+				// }
 
 				// var max = Math.max(score1, score2, score3)
 				// var sum = Math.max(score1 + score2 + score3)

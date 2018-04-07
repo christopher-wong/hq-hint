@@ -25,7 +25,8 @@ async def answer_question(question, original_answers):
         "question": question,
         "ans_1": original_answers[0],
         "ans_2": original_answers[1],
-        "ans_3": original_answers[2]
+        "ans_3": original_answers[2],
+        "backup": "none",
     }
 
     # sync questions without answer to the server
