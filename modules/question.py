@@ -1,6 +1,7 @@
 import itertools
 import re
 from collections import defaultdict
+import csv
 
 from modules import firebase, search, jakes
 
@@ -80,8 +81,10 @@ async def answer_question(question, original_answers):
     with open('questions.csv', 'a') as file:
         # writes a CSV with these values to disk
         # question, answer1, answer2, answer3, predicted_answer
-        file.write("\t".join([question, question_block["ans_1"], question_block["ans_2"], question_block["ans_3"], best_answer + "\n"]))
-        file.close()
+        # file.write(",".join([question, question_block["ans_1"], question_block["ans_2"], question_block["ans_3"], best_answer + "\n"]))
+        # file.close()
+        writer = csv.writer(file)
+        writer.writerow([question, question_block["ans_1"], question_block["ans_2"], question_block["ans_3"], best_answer])
 
     # Get key nouns for Method 3
     # key_nouns = set(quoted)
