@@ -54,7 +54,7 @@ def sync_questions(question_block):
         "correct_ans": "",
         "thinking": True,
         "live": True,
-        "backup": "none",
+        "backup": question_block['backup'],
     }
 
     url = "https://hqhint-hosted.firebaseio.com/q1.json"
