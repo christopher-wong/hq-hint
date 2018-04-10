@@ -23,7 +23,7 @@ def standby():
     data = {
         "question": "<small style='color: gray;'>Check back next game.</small><br><br>What does this site do?",
         "ans_1": "Nothing",
-        "ans_2": "Sells data to Cambridge Analytica",
+        "ans_2": "Forces Mark to testify",
         "ans_3": "Predicts HQ answers",
         "ans_1_count": 0,
         "ans_2_count": 40,

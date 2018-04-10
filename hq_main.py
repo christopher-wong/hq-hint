@@ -1,7 +1,6 @@
 import asyncio
 import time
 from datetime import datetime
-
 from modules import firebase, networking
 
 # Read in bearer token and user ID

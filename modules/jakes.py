@@ -1,15 +1,6 @@
-# import libs
 import urllib.parse, requests
-
-# import Bsoup
 from bs4 import BeautifulSoup
-
-class colors:
-    blue = '\033[94m'
-    red = "\033[0;31m"
-    green = '\033[1;32m'
-    end = '\033[0m'
-    bold = '\033[1m'
+from modules.colors import colors
 
 
 def google(question, num):
