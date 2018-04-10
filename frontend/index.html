@@ -16,7 +16,7 @@
 	</script>
 
 	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-	<meta content="utf-8" http-equiv="encoding">
+	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta property="og:title" content="HQ Hint - Real time HQ Trivia Answers" />
 	<meta name="description" content="Predicts answers to live HQ questions using automated Google seraches." />
@@ -57,7 +57,7 @@
 			</div>
 		</div>
 		<div class="disclaimer">
-			<small>P.S. If the score for all answers are 0, a correct answer could not be calculated with certainty.</small>
+			<small>If the score for all answers are 0, a correct answer could not be calculated with certainty.</small>
 		</div>
 	</div>
 
@@ -82,9 +82,9 @@
 			var questionRef = firebase.database().ref('q1/');
 
 			questionRef.on('value', function(snapshot) {
-				newData = snapshot.val()
+				var newData = snapshot.val();
 
-				var backup_ans = document.getElementById("backup_ans")
+				var backup_ans = document.getElementById("backup_ans");
 
 				var question = document.getElementById('question');
 				var ans1 = document.getElementById('ans_1');
@@ -96,31 +96,31 @@
 				var ans3Count = document.getElementById('ans_3_count');
 
 				var liveStatus = document.getElementById('live-indicator');
-				var liveBubble = document.getElementById("live-bubble")
+				var liveBubble = document.getElementById("live-bubble");
 
 				if (newData.live) {
-					liveStatus.innerHTML = "Live!"
-					liveBubble.classList.remove("standby-background")
+					liveStatus.innerHTML = "Live!";
+					liveBubble.classList.remove("standby-background");
 					liveBubble.classList.add("live-background")
 				} else {
-					liveStatus.innerHTML = "Standby..."
-					liveBubble.classList.remove("live-background")
+					liveStatus.innerHTML = "Standby...";
+					liveBubble.classList.remove("live-background");
 					liveBubble.classList.add("standby-background")
 				}
 
-				question.innerHTML = newData.question
-				ans1.innerHTML = newData.ans_1
-				ans2.innerHTML = newData.ans_2
-				ans3.innerHTML = newData.ans_3
-				ans1Count.innerHTML = newData.ans_1_count
-				ans2Count.innerHTML = newData.ans_2_count
-				ans3Count.innerHTML = newData.ans_3_count
+				question.innerHTML = newData.question;
+				ans1.innerHTML = newData.ans_1;
+				ans2.innerHTML = newData.ans_2;
+				ans3.innerHTML = newData.ans_3;
+				ans1Count.innerHTML = newData.ans_1_count;
+				ans2Count.innerHTML = newData.ans_2_count;
+				ans3Count.innerHTML = newData.ans_3_count;
 
-				var score1 = parseInt(newData.ans_1_count)
-				var score2 = parseInt(newData.ans_2_count)
-				var score3 = parseInt(newData.ans_3_count)
+				var score1 = parseInt(newData.ans_1_count);
+				var score2 = parseInt(newData.ans_2_count);
+				var score3 = parseInt(newData.ans_3_count);
 
-				backup_ans.innerHTML = "Backup: " + newData.backup
+				backup_ans.innerHTML = "Backup: " + newData.backup;
 				// if (newData.backup) {
 				// 	backup_ans.innerHTML = "Backup: " + newData.backup
 				// 	console.log("%c Backup: " + newData.backup, "color: #27ae60");
@@ -146,27 +146,31 @@
 				// 	score = 0
 				// }
 
-				var statusText = document.getElementById("status-text")
+				var statusText = document.getElementById("status-text");
 
-				if (newData.correct_ans == "") {
+				if (newData.correct_ans === "") {
 					statusText.innerHTML = "Thinking..."
 				} else {
 					statusText.innerHTML = ""
 				}
 
-				ans1Button = document.getElementById("ans_1_button")
-				ans2Button = document.getElementById("ans_2_button")
-				ans3Button = document.getElementById("ans_3_button")
+				ans1Button = document.getElementById("ans_1_button");
+				ans2Button = document.getElementById("ans_2_button");
+				ans3Button = document.getElementById("ans_3_button");
 
-				ans1Button.classList.remove("correct_answer")
-				ans2Button.classList.remove("correct_answer")
-				ans3Button.classList.remove("correct_answer")
+				ans1Button.classList.remove("correct_answer");
+				ans2Button.classList.remove("correct_answer");
+				ans3Button.classList.remove("correct_answer");
 
-				var correctId = newData.correct_ans
-				var correctAnswer = document.getElementById(correctId + "_button")
+				var correctId = newData.correct_ans;
+				var correctAnswer = document.getElementById(correctId + "_button");
 				
-				if (correctId) { // if (correctAnswer) {
-					correctAnswer.classList.add("correct_answer")
+				if (correctId && (score1 + score2 + score3 !== 0)) { // if (correctAnswer) {
+					correctAnswer.classList.add("correct_answer");
+				} else {
+				    ans1Button.classList.remove("no_answer");
+					ans2Button.classList.remove("no_answer");
+					ans3Button.classList.remove("no_answer");
 				}
 			});
 		}

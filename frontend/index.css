@@ -105,7 +105,6 @@ div.iphone-bg {
     /*max-width: 370px;*/
 
     padding-bottom: 12px;
-    background: red;
     border-radius: 32px;
     background: #3498db;
     /*background: -webkit-linear-gradient(left top, #6A67D8, #6A67D8);*/
@@ -150,7 +149,7 @@ div.score {
 
 h2.question {
     padding: 0px 3%;
-    margin: none;
+    /*margin: none;*/
     text-align: center;
     color: #151515;
     /*line-height: 2.5vh;*/
@@ -180,6 +179,10 @@ div.answer {
 
 div.correct_answer {
     background-color: #2ecc71;
+}
+
+div.no_answer {
+    background-color: #bdc3c7;
 }
 
 span.answer_count {

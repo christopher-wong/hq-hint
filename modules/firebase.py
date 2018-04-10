@@ -23,7 +23,7 @@ def standby():
     data = {
         "question": "<small style='color: gray;'>Check back next game.</small><br><br>What does this site do?",
         "ans_1": "Nothing",
-        "ans_2": "Sells your data to Cambridge Analytica",
+        "ans_2": "Sells data to Cambridge Analytica",
         "ans_3": "Predicts HQ answers",
         "ans_1_count": 0,
         "ans_2_count": 40,
@@ -80,7 +80,15 @@ def sync_results(question_block, results):
         if r["ans"] == to_check["ans"]:
             correct_ans = "ans_%s" % (i + 1)
 
+    # select_answer = False
 
+    # for result in results:
+    #     if result["count"] != 0:
+    #         select_answer = True
+    #         break
+    #
+    # if not select_answer:
+    #     correct_ans = ""
 
     data = {
         "question": question_block["question"],

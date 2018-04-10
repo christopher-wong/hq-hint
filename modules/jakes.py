@@ -110,7 +110,7 @@ def print_results(results):
 
     print(colors.blue + "-" * 15 + colors.end)
 
-    return large['ans'] if large['ans'] else ""
+    return text if text else ""
 
 # def main():
 #
