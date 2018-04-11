@@ -1,10 +1,5 @@
-import asyncio
-import json
-import re
-
-import aiohttp
+import asyncio, json, re, aiohttp
 from unidecode import unidecode
-
 from modules import question
 
 
