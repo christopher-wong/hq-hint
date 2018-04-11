@@ -124,12 +124,8 @@
 				var correctId = newData.correct_ans;
 				var correctAnswer = document.getElementById(correctId + "_button");
 
-				if (correctId && (score1 + score2 + score3 !== 0)) { // if (correctAnswer) {
+				if (correctId) { // if (correctAnswer) {
 					correctAnswer.classList.add("correct_answer");
-				} else {
-				    ans1Button.classList.add("no_answer");
-					ans2Button.classList.add("no_answer");
-					ans3Button.classList.add("no_answer");
 				}
 			});
 		}

@@ -37,10 +37,12 @@ while True:
             now = time.time()
             offset = datetime.fromtimestamp(now) - datetime.utcfromtimestamp(now)
 
-            print(f"Next show time: {(next_time + offset).strftime('%Y-%m-%d %I:%M %p')}")
+            pretty_time = (next_time + offset).strftime('%Y-%m-%d %I:%M %p')
+
+            print(f"Next show time: {pretty_time}")
             print("Prize: " + response_data["nextShowPrize"])
 
-            firebase.standby()
+            firebase.standby(pretty_time)
 
             exit()
     else:
