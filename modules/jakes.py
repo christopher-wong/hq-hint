@@ -79,10 +79,10 @@ def rank_answers(question_block):
 
     if reverse:
         final_answer = max(results, key=lambda x: x["count"])["ans"]
-        print(final_answer)
+        print(colors.blue + "Backup answer: " + final_answer + colors.end)
     else:
         final_answer = min(results, key=lambda x: x["count"])["ans"]
-        print(final_answer)
+        print(colors.blue + "Backup answer: " + final_answer + colors.end)
 
     return results, final_answer
 
