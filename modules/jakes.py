@@ -3,13 +3,13 @@ from bs4 import BeautifulSoup
 from modules.colors import colors
 
 
-def google(question, num):
+def google(question_list, num):
     """
         given a list of queries, this function Google's them as a concatenated string.
 
     """
 
-    params = {"q": question, "num": num}
+    params = {"q": " ".join(question_list), "num": num}
     url_params = urllib.parse.urlencode(params)
     google_url = "https://www.google.com/search?" + url_params
 
@@ -45,7 +45,7 @@ def rank_answers(question_block):
         print("reversing results...")
         reverse = False
 
-    text = google(question, 50)
+    text = google([question], 50)
 
     results = []
 
@@ -75,7 +75,16 @@ def rank_answers(question_block):
         results.append({"ans": ans_2, "count": text.count(ans_2)})
         results.append({"ans": ans_3, "count": text.count(ans_3)})
 
-    return results
+    final_answer = ""
+
+    if reverse:
+        final_answer = max(results, key=lambda x: x["count"])["ans"]
+        print(final_answer)
+    else:
+        final_answer = min(results, key=lambda x: x["count"])["ans"]
+        print(final_answer)
+
+    return results, final_answer
 
 def print_results(results):
     """
@@ -83,25 +92,23 @@ def print_results(results):
 
     """
 
-    print(colors.blue + "\n" + "-" * 15)
-    print("Jake's method: \n" + colors.end)
-
     small = min(results, key=lambda x: x["count"])
     large = max(results, key=lambda x: x["count"])
 
     for (i, r) in enumerate(results):
         text = "%s - %s" % (r["ans"], r["count"])
 
-        if r["ans"] == large["ans"]:
-            print(colors.green + text + colors.end)
-        elif r["ans"] == small["ans"]:
-            print(colors.red + text + colors.end)
-        else:
-            print(text)
+        print(text)
+        # if r["ans"] == large["ans"]:
+        #     print(colors.green + text + colors.end)
+        # elif r["ans"] == small["ans"]:
+        #     print(colors.red + text + colors.end)
+        # else:
+        #     print(text)
 
     print(colors.blue + "-" * 15 + colors.end)
 
-    return text if text else ""
+    return ""
 
 # def main():
 #
@@ -112,9 +119,8 @@ def print_results(results):
 # 		"ans_3": "Kepler",
 #     }
 #
-#     results = rank_answers(data)
+#     results, final_answer = rank_answers(data)
 #
-#     answer = print_results(results)
-#     print(answer)
+#
 #
 # main()

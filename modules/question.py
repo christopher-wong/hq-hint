@@ -104,11 +104,11 @@ async def answer_question(question, original_answers):
     # JAKE MORE METHOD #
 
     # find answer using Jake's method
-    method_4 = jakes.rank_answers(question_block)
+    _, final_answer = jakes.rank_answers(question_block)
 
     # copy question block, add backup answer to block, a d print
     jakes_question_block = question_block.copy()
-    jakes_question_block['backup'] = jakes.print_results(method_4)
+    jakes_question_block['backup'] = final_answer
 
     # sync to remote, this answer gets logged to the console
     firebase.sync_results(jakes_question_block, results)
