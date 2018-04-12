@@ -70,14 +70,6 @@ async def answer_question(question, original_answers):
 
     firebase.sync_results(question_block, results)
 
-    with open('questions.csv', 'a') as file:
-        # writes a CSV with these values to disk
-        # question, answer1, answer2, answer3, predicted_answer
-        # file.write(",".join([question, question_block["ans_1"], question_block["ans_2"], question_block["ans_3"], best_answer + "\n"]))
-        # file.close()
-        writer = csv.writer(file)
-        writer.writerow([question, question_block["ans_1"], question_block["ans_2"], question_block["ans_3"], best_answer])
-
     # Get key nouns for Method 3
     # key_nouns = set(quoted)
     #
@@ -122,6 +114,14 @@ async def answer_question(question, original_answers):
     firebase.sync_results(jakes_question_block, results)
 
     # END JAKE'S METHOD
+
+    with open('questions.csv', 'a') as file:
+        # writes a CSV with these values to disk
+        # question, answer1, answer2, answer3, predicted_answer
+        # file.write(",".join([question, question_block["ans_1"], question_block["ans_2"], question_block["ans_3"], best_answer + "\n"]))
+        # file.close()
+        writer = csv.writer(file)
+        writer.writerow([question, question_block["ans_1"], question_block["ans_2"], question_block["ans_3"], best_answer])
 
     return ""
 

@@ -23,6 +23,12 @@ nltk.download("all")
 python hq_main.py
 ```
 
+### Cron Settings
+```
+#0 15 * * 1-5 ./go.sh
+#0 21 * * * ./go.sh
+```
+
 ### Firebase
 ```
 Hosting details and UI description coming soon...
