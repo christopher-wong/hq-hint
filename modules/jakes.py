@@ -78,11 +78,11 @@ def rank_answers(question_block):
     final_answer = ""
 
     if reverse:
-        final_answer = max(results, key=lambda x: x["count"])["ans"]
-        print(colors.blue + "Backup answer: " + final_answer + colors.end)
+        final_answer = max(results, key=lambda x: x["count"])
+        print("{} Backup answer: {} - {}{}".format(colors.blue, final_answer["ans"], final_answer["count"], colors.end))
     else:
-        final_answer = min(results, key=lambda x: x["count"])["ans"]
-        print(colors.blue + "Backup answer: " + final_answer + colors.end)
+        final_answer = min(results, key=lambda x: x["count"])
+        print("{} Backup answer: {} - {}{}".format(colors.blue, final_answer["ans"], final_answer["count"], colors.end))
 
     return results, final_answer
 
@@ -110,17 +110,17 @@ def print_results(results):
 
     return ""
 
-# def main():
-#
-#     data = {
-# 		"question": "Which astronomer did NOT discover three famous laws of motion?",
-# 		"ans_1": "Newton",
-# 		"ans_2": "Galileo",
-# 		"ans_3": "Kepler",
-#     }
-#
-#     results, final_answer = rank_answers(data)
-#
-#
-#
-# main()
+def main():
+
+    data = {
+		"question": "What does a thermometer primarily measure?",
+		"ans_1": "Hope",
+		"ans_2": "Temperature",
+		"ans_3": "Distance",
+    }
+
+    results, final_answer = rank_answers(data)
+
+
+
+main()
