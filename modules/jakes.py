@@ -110,17 +110,17 @@ def print_results(results):
 
     return ""
 
-def main():
-
-    data = {
-		"question": "What does a thermometer primarily measure?",
-		"ans_1": "Hope",
-		"ans_2": "Temperature",
-		"ans_3": "Distance",
-    }
-
-    results, final_answer = rank_answers(data)
-
-
-
-main()
+# def main():
+#
+#     data = {
+# 		"question": "What does a thermometer primarily measure?",
+# 		"ans_1": "Hope",
+# 		"ans_2": "Temperature",
+# 		"ans_3": "Distance",
+#     }
+#
+#     results, final_answer = rank_answers(data)
+#
+#
+#
+# main()
