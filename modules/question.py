@@ -68,6 +68,8 @@ async def answer_question(question, original_answers):
             "ans": f"ans_{i + 1}",
         })
 
+    print(results)
+
     firebase.sync_results(question_block, results)
 
     # Get key nouns for Method 3
