@@ -84,7 +84,7 @@ def rank_answers(question_block):
         final_answer = min(results, key=lambda x: x["count"])
         print("{} Backup answer: {} - {}{}".format(colors.blue, final_answer["ans"], final_answer["count"], colors.end))
 
-    return results, final_answer
+    return results, "{} - {}".format(final_answer["ans"], final_answer["count"])
 
 def print_results(results):
     """
