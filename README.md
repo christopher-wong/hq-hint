@@ -1,10 +1,8 @@
 ### Installation
-I recommend creating a virtual environment before installing dependencies. 
-My personal setup uses Anaconda.
+Install Docker
 ```
-conda create -n hq-hint python=3.6
-source activate hq-hint
-pip install -r requirements.txt
+docker build -t hq-hint .
+docker run -it hq-hint
 ```
 ### Additional setup
 Enter your bearer token and user ID in the conn_settings.txt file.
@@ -12,15 +10,9 @@ These values can be found by sniffing the traffic on your phone.
 The bearer token should be one line, without the word Bearer.
 iOS users can find this using Charles' HTTPS proxy feature.
 
-In a Python shell, run:
-```
-import nltk
-nltk.download("all")
-```
-
 ### Usage
 ```
-python hq_main.py
+docker run -it hq-hint
 ```
 
 ### Cron Settings
