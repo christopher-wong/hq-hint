@@ -1,2 +1,2 @@
 #!/bin/bash
-docker run hq-v2
+docker run -it hq-v2
